@@ -1,40 +1,41 @@
+import webbrowser
+import urllib.parse
+
 class Mail:
 
-    To : str
-    From : str
-    Content : str
-    Header : str
+    def __init__(self):
+        pass
 
-    def __init__(self, To, From, Content, Header):
-        self.To = To
-        self.From = From
-        self.Content = Content
-        self.Header = Header
-
-    def create_mail(To, From, Content, Header):
+    def create_mail(To, Content, Header):
         """
-        Function: create_email
+    Fonction : create_mail
 
-Description: Creates an email draft without automatically sending it.
+    Description : Crée un brouillon d'email sans l'envoyer automatiquement.
 
-Parameters:
-- from_address (string): The sender's email address (e.g., "your.name@example.com")
-- to_address (string): The recipient's email address (e.g., "townhall@city.gov")
-- subject (string): The email subject line that summarizes the purpose of the email
-- body (string): The complete content of the email, including greeting, main message, questions, and signature
+    Paramètres :
+    - To (string) : L'adresse email du destinataire (ex: "mairie@ville.fr")
+    - Content (string) : Le contenu complet de l'email, incluant la salutation, le message principal, les questions et la signature
+    - Header (string) : L'objet de l'email qui résume le but du message
 
-Returns:
-- email_object: A structured email object that can be reviewed before sending
+    Fonctionnement :
+    - Ouvre le client de messagerie par défaut de l'utilisateur avec un nouveau message pré-rempli
+    - Utilise le protocole "mailto:" pour créer un lien vers un nouvel email
 
-Note: This function only prepares the email. No email will be sent automatically. You must explicitly call a separate send function if you wish to transmit the email.
+    Note : Cette fonction prépare uniquement l'email dans le client de messagerie par défaut. L'envoi devra être confirmé manuellement par l'utilisateur.
 
-Example usage:
-create_email(
-    from_address="john.smith@gmail.com",
-    to_address="mairie@paris.fr",
-    subject="Request for Information About Business Permits",
-    body="Dear Sir/Madam,\n\nI am writing to inquire about the procedure for obtaining a business permit in your municipality...\n\nThank you for your assistance.\n\nSincerely,\nJohn Smith\nPhone: 06 12 34 56 78"
-)
-        """
-        email = Mail(To, From, Content, Header)
-        return email
+    Exemple d'utilisation :
+    create_mail(
+        To="mairie@paris.fr",
+        Content="Madame, Monsieur,\n\nJe vous écris pour me renseigner sur la procédure d'obtention d'un permis d'entreprise dans votre municipalité...\n\nMerci pour votre aide.\n\nCordialement,\nJean Dupont\nTéléphone: 06 12 34 56 78",
+        Header="Demande d'informations sur les permis d'entreprise"
+    )
+    """
+        params = {
+            "subject": Header,
+            "body": Content
+        }
+
+
+        url = f"mailto:{To}?{urllib.parse.urlencode(params).replace('+', '%20')}"
+
+        webbrowser.open(url)
